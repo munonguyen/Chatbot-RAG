@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chatbot RAG dữ liệu riêng</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Private Data RAG</p>
+          <h1>Chatbot RAG dữ liệu riêng</h1>
+        </div>
+        <div class="pipeline" aria-label="RAG pipeline">
+          <span>Tài liệu</span>
+          <span>Chunks</span>
+          <span>Embedding</span>
+          <span>Truy xuất</span>
+          <span>LLM</span>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="panel data-panel" aria-labelledby="data-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Knowledge Base</p>
+              <h2 id="data-title">Dữ liệu riêng</h2>
+            </div>
+            <button class="icon-button danger" id="clearButton" title="Xóa index" aria-label="Xóa index">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12M9 7V5h6v2m-8 3 1 9h8l1-9" /></svg>
+            </button>
+          </div>
+
+          <label class="dropzone" for="fileInput">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V4m0 0 4 4m-4-4-4 4M5 15v4h14v-4" /></svg>
+            <span>Chọn tài liệu</span>
+            <small>.txt, .md, .csv, .json, .log</small>
+          </label>
+          <input id="fileInput" type="file" multiple accept=".txt,.md,.csv,.json,.log" />
+
+          <div class="action-row">
+            <button class="primary-button" id="ingestButton">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v4H4zM4 15h16v4H4zM8 9v6m8-6v6" /></svg>
+              Nạp dữ liệu
+            </button>
+            <button class="ghost-button" id="autoIngestButton">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4v6h6M20 20v-6h-6M6 18A8 8 0 0 1 18 6M18 6h-5M18 6v5" /></svg>
+              Quét thư mục
+            </button>
+            <button class="ghost-button" id="sampleButton">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h10l4 4v12H5zM14 4v5h5M8 13h8M8 17h5" /></svg>
+              Nạp mẫu
+            </button>
+          </div>
+
+          <div class="stats-grid" aria-label="Index status">
+            <div>
+              <strong id="docCount">0</strong>
+              <span>Tài liệu</span>
+            </div>
+            <div>
+              <strong id="chunkCount">0</strong>
+              <span>Chunks</span>
+            </div>
+            <div>
+              <strong id="llmMode">Local</strong>
+              <span>LLM</span>
+            </div>
+          </div>
+
+          <div class="profile-card">
+            <span>Chuyên ngành đang học</span>
+            <strong id="domainName">Đang học từ hội thoại</strong>
+            <small id="domainTerms">Chưa có từ khóa.</small>
+          </div>
+
+          <div class="document-list" id="documentList" aria-live="polite"></div>
+        </section>
+
+        <section class="panel chat-panel" aria-labelledby="chat-title">
+          <div class="panel-heading chat-heading">
+            <div>
+              <p class="eyebrow">Conversation</p>
+              <h2 id="chat-title">Hỏi đáp có truy xuất nguồn</h2>
+            </div>
+            <div class="chat-tools">
+              <label class="toggle-row">
+                <input id="autoResearchToggle" type="checkbox" checked />
+                <span>Tự nghiên cứu</span>
+              </label>
+              <span class="status-pill" id="statusPill">Sẵn sàng</span>
+            </div>
+          </div>
+
+          <div class="chat-stream" id="chatStream" aria-live="polite">
+            <article class="message assistant">
+              <div class="avatar">AI</div>
+              <p>Chưa có cuộc hội thoại. Khi có dữ liệu trong index, câu trả lời sẽ đi kèm nguồn truy xuất.</p>
+            </article>
+          </div>
+
+          <form class="composer" id="chatForm">
+            <input id="messageInput" name="message" autocomplete="off" placeholder="Hỏi trên dữ liệu đã nạp..." />
+            <button class="send-button" type="submit" title="Gửi câu hỏi" aria-label="Gửi câu hỏi">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11 20 4l-7 16-2-7z" /></svg>
+            </button>
+          </form>
+        </section>
+
+        <section class="panel context-panel" aria-labelledby="context-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Retrieved Context</p>
+              <h2 id="context-title">Nguồn được dùng</h2>
+            </div>
+          </div>
+          <div id="sourceList" class="source-list">
+            <p class="empty-copy">Chưa có nguồn truy xuất.</p>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/static/app.js" type="module"></script>
+  </body>
+</html>

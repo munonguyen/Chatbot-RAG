@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+.env
+server.log
+data/vector_store.json
+data/chat_memory.json
+knowledge/*
+!knowledge/.gitkeep
+!knowledge/rag-foundation.md
